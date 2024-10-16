@@ -4,31 +4,41 @@
 <title>HCDIV2024 Assignment 1</title>
 <style>
   body {
-    text-align: center; 
+    text-align: center;
   }
-  
+
   table {
-    margin: 0 auto; 
-    width: 50%; 
+    margin: 0 auto;
+    width: 50%;
     border-collapse: collapse;
   }
 
   th, td {
-    border: 2px solid black;
-    padding: 14px;
-    text-align: center; 
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
   }
 
   th {
-    font-size: 1.5em;
+    font-size: 1.5em; /* Increase font size for table headers */
+  }
+
+  input {
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 50%;
+    font-size: 1em;
   }
 </style>
 </head>
 <body>
 
-<h2>Singapore Weather Forecast - by Area</h2>
-<h4 id="timestring"></h4> 
-<h4 id="validToString"></h4> 
+<h2>Singapore 2-hr weather forecast</h2>
+<h4 id="timestring"></h4>
+<h4 id="validToString"></h4>
+
+<!-- Search bar -->
+<input type="text" id="searchBar" placeholder="Search for an area..." onkeyup="filterTable()">
 
 <table id="weatherTable">
     <tr>
@@ -44,10 +54,10 @@ fetch('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast')
     let timestamp = responsedata.items[0].update_timestamp;
     document.getElementById('timestring').textContent = `Last updated: ${new Date(timestamp).toLocaleString()}`;
     
-    
+    // Calculate valid to time (2 hours later)
     let validTo = new Date(timestamp);
     validTo.setHours(validTo.getHours() + 2);
-    document.getElementById('validToString').textContent = `Valid until: ${validTo.toLocaleString()}`;
+    document.getElementById('validToString').textContent = `Valid to: ${validTo.toLocaleString()}`;
 
     // Populate table
     const forecasts = responsedata.items[0].forecasts;
@@ -61,6 +71,21 @@ fetch('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast')
     });
   })
   .catch(error => console.error('Error:', error));
+
+function filterTable() {
+    let input = document.getElementById('searchBar').value.toLowerCase();
+    let table = document.getElementById('weatherTable');
+    let rows = table.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        let area = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
+        if (area.indexOf(input) > -1) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
+    }
+}
 </script>
 </body>
 </html>
