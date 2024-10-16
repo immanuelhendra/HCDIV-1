@@ -14,8 +14,8 @@
   }
 
   th, td {
-    border: 1px solid black;
-    padding: 8px;
+    border: 2px solid black;
+    padding: 14px;
     text-align: center; 
   }
 </style>
@@ -43,7 +43,7 @@ fetch('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast')
     
     let validTo = new Date(timestamp);
     validTo.setHours(validTo.getHours() + 2);
-    document.getElementById('validToString').textContent = `Valid to: ${validTo.toLocaleString()}`;
+    document.getElementById('validToString').textContent = `Valid until: ${validTo.toLocaleString()}`;
 
     // Populate table
     const forecasts = responsedata.items[0].forecasts;
