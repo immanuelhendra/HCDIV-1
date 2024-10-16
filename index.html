@@ -4,7 +4,7 @@
 <title>Assignment 1</title>
 <style>
   body {
-    text-align: center;
+    text-align: center; 
   }
   
   table {
@@ -19,12 +19,13 @@
     text-align: center; 
   }
 </style>
-
 </head>
 <body>
 
 <h2>Singapore 2-hr weather forecast</h2>
-<h4 id="timestring"></h4>
+<h4 id="timestring"></h4> 
+<h4 id="validToString"></h4> 
+
 <table id="weatherTable">
     <tr>
         <th>Area</th>
@@ -37,13 +38,15 @@ fetch('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast')
   .then(response => response.json())
   .then(responsedata => {
     let timestamp = responsedata.items[0].update_timestamp;
-    let forecasts = responsedata.items[0].forecasts;
-    
     document.getElementById('timestring').textContent = `Last updated: ${new Date(timestamp).toLocaleString()}`;
+    
+    
     let validTo = new Date(timestamp);
     validTo.setHours(validTo.getHours() + 2);
     document.getElementById('validToString').textContent = `Valid to: ${validTo.toLocaleString()}`;
-    
+
+    // Populate table
+    const forecasts = responsedata.items[0].forecasts;
     const table = document.getElementById('weatherTable');
     forecasts.forEach(forecast => {
         let row = table.insertRow();
@@ -57,4 +60,3 @@ fetch('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast')
 </script>
 </body>
 </html>
-
