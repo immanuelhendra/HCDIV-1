@@ -4,19 +4,19 @@
 <title>Assignment 1</title>
 <style>
   body {
-    text-align: center; /* Center text in the body */
+    text-align: center;
   }
   
   table {
-    margin: 0 auto; /* Center the table */
-    width: 50%; /* Set a width for the table */
+    margin: 0 auto; 
+    width: 50%; 
     border-collapse: collapse;
   }
 
   th, td {
     border: 1px solid black;
     padding: 8px;
-    text-align: left; /* Align text in table cells to the left */
+    text-align: center; 
   }
 </style>
 
@@ -39,10 +39,11 @@ fetch('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast')
     let timestamp = responsedata.items[0].update_timestamp;
     let forecasts = responsedata.items[0].forecasts;
     
-    // Update timestamp
     document.getElementById('timestring').textContent = `Last updated: ${new Date(timestamp).toLocaleString()}`;
-
-    // Populate table with areas and forecasts
+    let validTo = new Date(timestamp);
+    validTo.setHours(validTo.getHours() + 2);
+    document.getElementById('validToString').textContent = `Valid to: ${validTo.toLocaleString()}`;
+    
     const table = document.getElementById('weatherTable');
     forecasts.forEach(forecast => {
         let row = table.insertRow();
