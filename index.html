@@ -1,12 +1,52 @@
-<!doctype html> 
+<!doctype html>
 <html>
-    <head>
-        <title> Test webpage </title>
-        <meta charset=""UTF-8">
-        <meta name=""description" content=""This field contains information about your page."">
-        <meta name=""author" content=""Hendra">
-    </head>
-    <body>
-        <h1> Welcome to my page</h1>
-    </body>
+<head>
+<title>Assignment 1</title>
+<style>
+  table {
+    width: 50%;
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+</style>
+</head>
+<body>
+
+<h2>Singapore 2-hr weather forecast</h2>
+<h4 id="timestring"></h4>
+<table id="weatherTable">
+    <tr>
+        <th>Area</th>
+        <th>Forecast</th>
+    </tr>
+</table>
+
+<script>
+fetch('https://api.data.gov.sg/v1/environment/2-hour-weather-forecast')
+  .then(response => response.json())
+  .then(responsedata => {
+    let timestamp = responsedata.items[0].update_timestamp;
+    let forecasts = responsedata.items[0].forecasts;
+    
+    // Update timestamp
+    document.getElementById('timestring').textContent = `Last updated: ${new Date(timestamp).toLocaleString()}`;
+
+    // Populate table with areas and forecasts
+    const table = document.getElementById('weatherTable');
+    forecasts.forEach(forecast => {
+        let row = table.insertRow();
+        let areaCell = row.insertCell(0);
+        let forecastCell = row.insertCell(1);
+        areaCell.textContent = forecast.area;
+        forecastCell.textContent = forecast.forecast;
+    });
+  })
+  .catch(error => console.error('Error:', error));
+</script>
+</body>
 </html>
+
